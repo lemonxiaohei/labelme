@@ -2253,9 +2253,8 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 item.setCheckState(Qt.Unchecked)
             self.fileListWidget.addItem(item)
-    def _imporyt_json_from_dir(
-        self, json_dir: str | None
-    ) -> None:
+
+    def _imporyt_json_from_dir(self, json_dir: str | None) -> None:
         self.actions.openNextImg.setEnabled(True)
         self.actions.openPrevImg.setEnabled(True)
 
@@ -2269,7 +2268,7 @@ class MainWindow(QtWidgets.QMainWindow):
         filenames = []
         for root, dirs, files in os.walk(json_dir):
             for file in files:
-                if file.lower().endswith('.json'):
+                if file.lower().endswith(".json"):
                     relativePath = os.path.normpath(osp.join(root, file))
                     filenames.append(relativePath)
 
@@ -2283,7 +2282,6 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 item.setCheckState(Qt.Unchecked)
             self.fileListWidget.addItem(item)
-     
 
     def _update_status_stats(self, mouse_pos: QtCore.QPointF) -> None:
         stats: list[str] = []

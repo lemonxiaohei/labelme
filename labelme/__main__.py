@@ -184,7 +184,7 @@ def main():
     parser.add_argument(
         "--json-dir",
         help="load labelfiles from the directory,then load images",
-        type = str,
+        type=str,
     )
     args = parser.parse_args()
 
@@ -257,7 +257,7 @@ def main():
         filename=filename,
         output_file=output_file,
         output_dir=output_dir,
-        json_dir=json_dir
+        json_dir=json_dir,
     )
 
     if reset_config:
