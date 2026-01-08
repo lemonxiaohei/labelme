@@ -89,6 +89,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self,
         config: dict | None = None,
         filename: str | None = None,
+        json_dir: str | None = None,
         output: str | None = None,
         output_file: str | None = None,
         output_dir: str | None = None,
@@ -963,6 +964,9 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 self._load_file(filename=filename)
         else:
+            if json_dir is not None:
+                self._imporyt_json_from_dir(json_dir=json_dir)
+                self._open_next_image()
             self.filename = None
 
         # Populate the File menu dynamically.
@@ -2249,6 +2253,37 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 item.setCheckState(Qt.Unchecked)
             self.fileListWidget.addItem(item)
+    def _imporyt_json_from_dir(
+        self, json_dir: str | None
+    ) -> None:
+        self.actions.openNextImg.setEnabled(True)
+        self.actions.openPrevImg.setEnabled(True)
+
+        if not self._can_continue() or not json_dir:
+            return
+
+        self._prev_opened_dir = json_dir
+        self.filename = None
+        self.fileListWidget.clear()
+
+        filenames = []
+        for root, dirs, files in os.walk(json_dir):
+            for file in files:
+                if file.lower().endswith('.json'):
+                    relativePath = os.path.normpath(osp.join(root, file))
+                    filenames.append(relativePath)
+
+        filenames = natsort.os_sorted(filenames)
+
+        for filename in filenames:
+            item = QtWidgets.QListWidgetItem(filename)
+            item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
+            if QtCore.QFile.exists(filename) and LabelFile.is_label_file(filename):
+                item.setCheckState(Qt.Checked)
+            else:
+                item.setCheckState(Qt.Unchecked)
+            self.fileListWidget.addItem(item)
+     
 
     def _update_status_stats(self, mouse_pos: QtCore.QPointF) -> None:
         stats: list[str] = []

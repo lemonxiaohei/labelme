@@ -181,6 +181,11 @@ def main():
         help="epsilon to find nearest vertex on canvas",
         default=argparse.SUPPRESS,
     )
+    parser.add_argument(
+        "--json-dir",
+        help="load labelfiles from the directory,then load images",
+        type = str,
+    )
     args = parser.parse_args()
 
     if args.version:
@@ -217,6 +222,7 @@ def main():
     config_from_args.pop("version")
     reset_config = config_from_args.pop("reset_config")
     filename = config_from_args.pop("filename")
+    json_dir = config_from_args.pop("json_dir")
     output = config_from_args.pop("output")
     config_file_or_yaml = config_from_args.pop("config")
     config = get_config(config_file_or_yaml, config_from_args)
@@ -251,6 +257,7 @@ def main():
         filename=filename,
         output_file=output_file,
         output_dir=output_dir,
+        json_dir=json_dir
     )
 
     if reset_config:
